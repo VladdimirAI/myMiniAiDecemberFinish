@@ -3,68 +3,55 @@ package neuron;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
-
-
-public class MainResult2 {
-    static List<Neuron> inputNeurons = new ArrayList<>();
-    static List<Neuron> hideNeurons = new ArrayList<>();
+public class MainResult0 {
+    static List<Neuron> inputNeurons = List.of(new Neuron(), new Neuron(), new Neuron());
+    static List<Neuron> hideNeurons = List.of(new Neuron(), new Neuron());
     static Neuron outputNeuron = new Neuron();
-
     public static void main(String[] args) throws IOException {
         Random rnd = new Random();
+        Scanner scn = new Scanner(System.in);
 
-        // Создание входных нейронов
-        for (int i = 0; i < 229; i++) {
-            inputNeurons.add(new Neuron());
-        }
-
-        // Создание скрытых нейронов
-        for (int i = 0; i < 2; i++) {
-            hideNeurons.add(new Neuron());
-        }
-
-        // Инициализация связей между входными и скрытыми нейронами
         for (Neuron inputNeuron : inputNeurons) {
             for (Neuron hideNeuron : hideNeurons) {
                 inputNeuron.strelkaMap.put(hideNeuron, rnd.nextDouble(-0.3, 0.3));
             }
         }
 
-        // Инициализация связей между скрытыми и выходным нейронами
         for (Neuron hideNeuron : hideNeurons) {
             hideNeuron.strelkaMap.put(outputNeuron, rnd.nextDouble(-0.3, 0.3));
         }
-
         training("src/neuron/training2.txt");
 
-        byte[] inputValues = {1, 0, 1, 0, 1}; // Здесь пример значений для всех 229 входных нейронов
-        setInputValues(inputValues);
+        System.out.print("Есть ли оружие? (введите да/нет): ");
+        String val1 = scn.next();
+        System.out.print("Разница уровней меньше 2? (введите да/нет): ");
+        String val2 = scn.next();
+        System.out.print("Нас двое? (введите да/нет): ");
+        String val3 = scn.next();
+
+        inputNeurons.get(0).value = val1.equalsIgnoreCase("да")?1:0;
+        inputNeurons.get(1).value = val2.equalsIgnoreCase("да")?1:0;
+        inputNeurons.get(2).value = val3.equalsIgnoreCase("да")?1:0;
+
 
         double res = calc();
 
-        System.out.println("res = " + res);
-        System.out.println(res > 0.5 ? "Ставим" : "Отказываемся от ставки");
+        System.out.println("res = "+res);
+        System.out.println(res>0.5?"Атакуем":"Бежим");
+
+
     }
-
-    static void setInputValues(byte[] values) {
-        if (values.length != 229) {
-            throw new IllegalArgumentException("Количество значений не соответствует количеству входных нейронов");
-        }
-
-        for (int i = 0; i < inputNeurons.size(); i++) {
-            inputNeurons.get(i).value = values[i] != 0 ? 1 : 0;
-        }
-    }
-
-
+    //Наличие оружия
+    //Разница уровней меньше 2
     static void training(String trainingFilePath) throws IOException {
         List<String> lines = Files.readAllLines(Paths.get(trainingFilePath));
         for (int i = 0; i < 200; i++) {
+
+
             for (String line : lines) {
                 String[] data = line.split(" ");
                 int index = 0;
@@ -81,44 +68,62 @@ public class MainResult2 {
         }
     }
 
-    static void resolveWeights(double totalValue, double expectedValue) {
-        double error = totalValue - expectedValue;
-        double delta = error * (1 - error);
+    static void training2() throws IOException {
+
+
+
+
+
+            double expectedResult = 0;
+            double totalValue = calc();
+            double result = totalValue > 0.5 ? 1 : 0;
+            if (result != expectedResult) {
+                resolveWeights(totalValue, expectedResult);
+            }
+
+
+    }
+
+
+    static void resolveWeights(double totalValue, double expectedValue){
+        double error = totalValue-expectedValue;
+        double delta = error*(1-error);
         for (Neuron hideNeuron : hideNeurons) {
             Double oldWeight = hideNeuron.strelkaMap.get(outputNeuron);
-            hideNeuron.strelkaMap.put(outputNeuron, oldWeight - hideNeuron.value * delta * 0.3);
+            hideNeuron.strelkaMap.put(outputNeuron, oldWeight - hideNeuron.value*delta*0.3);
         }
         for (Neuron hideNeuron : hideNeurons) {
             double error2 = hideNeuron.strelkaMap.get(outputNeuron) * delta;
-            double delta2 = error2 * (1 - error2);
+            double delta2 = error2*(1-error2);
             for (Neuron inputNeuron : inputNeurons) {
                 Double oldWeight = inputNeuron.strelkaMap.get(hideNeuron);
-                inputNeuron.strelkaMap.put(hideNeuron, oldWeight - inputNeuron.value * delta2 * 0.3);
+                inputNeuron.strelkaMap.put(hideNeuron, oldWeight - inputNeuron.value*delta2*0.3);
             }
         }
+
     }
 
-    static double calc() {
+    static double calc(){
+
         for (Neuron hideNeuron : hideNeurons) {
             double sum = 0;
-            int index = 0;
             for (Neuron inputNeuron : inputNeurons) {
-                sum += inputNeuron.value * inputNeuron.strelkaMap.get(hideNeuron);
-                index++;
+                sum+=inputNeuron.value*inputNeuron.strelkaMap.get(hideNeuron);
             }
             hideNeuron.value = sigma(sum);
         }
-
         double sum = 0;
         for (Neuron hideNeuron : hideNeurons) {
-            sum += hideNeuron.value * hideNeuron.strelkaMap.get(outputNeuron);
+            sum+=hideNeuron.value*hideNeuron.strelkaMap.get(outputNeuron);
         }
         outputNeuron.value = sigma(sum);
-
         return outputNeuron.value;
     }
 
-    static double sigma(double totalWeight) {
-        return 1 / (1 + Math.pow(Math.E, -totalWeight));
+    static double sigma(double totalWeight){
+        return 1/(1+Math.pow(Math.E, -totalWeight));
     }
+
+
+
 }
