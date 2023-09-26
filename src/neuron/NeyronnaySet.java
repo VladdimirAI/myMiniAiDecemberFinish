@@ -9,13 +9,26 @@ import java.util.Random;
 import java.util.Scanner;
 
 
-
-public class MainResult2 {
+public class NeyronnaySet {
     static List<Neuron> inputNeurons = new ArrayList<>();
     static List<Neuron> hideNeurons = new ArrayList<>();
     static Neuron outputNeuron = new Neuron();
 
+
+    double initialWeight; // Начальные веса нейронов
+    double learningRate; // Шаг обучения
+    int numTrainingCycles; // Количество циклов обучения
+
     public static void main(String[] args) throws IOException {
+
+
+        NeyronnaySet neyronnaySet = new NeyronnaySet();
+        neyronnaySet.run();
+
+    }
+
+
+    public void run() throws IOException {
         Random rnd = new Random();
 
         // Создание входных нейронов
@@ -59,14 +72,13 @@ public class MainResult2 {
         setInputValues(inputValues);
 
 
-
         double res = calc();
 
         System.out.println("res = " + res);
         System.out.println(res > 0.5 ? "Ставим" : "Отказываемся от ставки");
     }
 
-    static void setInputValues(byte[] values) {
+    void setInputValues(byte[] values) {
         if (values.length != 299) {
             throw new IllegalArgumentException("Количество значений не соответствует количеству входных нейронов");
         }
@@ -77,7 +89,7 @@ public class MainResult2 {
     }
 
 
-    static void training(String trainingFilePath) throws IOException {
+    void training(String trainingFilePath) throws IOException {
         List<String> lines = Files.readAllLines(Paths.get(trainingFilePath));
         for (int i = 0; i < 200; i++) {
             for (String line : lines) {
@@ -96,7 +108,7 @@ public class MainResult2 {
         }
     }
 
-    static void resolveWeights(double totalValue, double expectedValue) {
+    void resolveWeights(double totalValue, double expectedValue) {
         double error = totalValue - expectedValue;
         double delta = error * (1 - error);
         for (Neuron hideNeuron : hideNeurons) {
@@ -113,7 +125,7 @@ public class MainResult2 {
         }
     }
 
-    static double calc() {
+    double calc() {
         for (Neuron hideNeuron : hideNeurons) {
             double sum = 0;
             int index = 0;
@@ -133,7 +145,7 @@ public class MainResult2 {
         return outputNeuron.value;
     }
 
-    static double sigma(double totalWeight) {
+    double sigma(double totalWeight) {
         return 1 / (1 + Math.pow(Math.E, -totalWeight));
     }
 }
