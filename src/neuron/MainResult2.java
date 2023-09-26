@@ -40,10 +40,25 @@ public class MainResult2 {
             hideNeuron.strelkaMap.put(outputNeuron, rnd.nextDouble(-0.3, 0.3));
         }
 
-        training("src/neuron/training2.txt");
+        training("src/neuron/outputResult.txt"); //todo тренировка файл
+//
+//        byte[] inputValues = {1, 0, 1, 0, 1}; // Здесь пример значений для всех 229 входных нейронов
 
-        byte[] inputValues = {1, 0, 1, 0, 1}; // Здесь пример значений для всех 229 входных нейронов
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Введите строку значений для всех 299 входных нейронов: ");
+        String inputString = scanner.nextLine();
+
+// Преобразование введенной строки в массив байтов
+        byte[] inputValues = new byte[299];
+        for (int i = 0; i < inputString.length(); i++) {
+            System.out.println(i);
+            inputValues[i] = Byte.parseByte(String.valueOf(inputString.charAt(i)));
+        }
+
         setInputValues(inputValues);
+
+
 
         double res = calc();
 
@@ -52,7 +67,7 @@ public class MainResult2 {
     }
 
     static void setInputValues(byte[] values) {
-        if (values.length != 229) {
+        if (values.length != 299) {
             throw new IllegalArgumentException("Количество значений не соответствует количеству входных нейронов");
         }
 
