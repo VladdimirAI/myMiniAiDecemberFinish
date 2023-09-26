@@ -65,7 +65,7 @@ public class NeyronnaySet {
         Random rnd = new Random(123); // Зерно рандома
 
         // Создание входных нейронов
-        for (int i = 0; i < 229; i++) {
+        for (int i = 0; i < 299; i++) {
             inputNeurons.add(new Neuron());
         }
 
@@ -77,13 +77,13 @@ public class NeyronnaySet {
         // Инициализация связей между входными и скрытыми нейронами
         for (Neuron inputNeuron : inputNeurons) {
             for (Neuron hideNeuron : hideNeurons) {
-                inputNeuron.strelkaMap.put(hideNeuron, rnd.nextDouble(-initialWeight, initialWeight));
+                inputNeuron.strelkaMap.put(hideNeuron, rnd.nextDouble(-0.3, 0.3));
             }
         }
 
         // Инициализация связей между скрытыми и выходным нейронами
         for (Neuron hideNeuron : hideNeurons) {
-            hideNeuron.strelkaMap.put(outputNeuron, rnd.nextDouble(-initialWeight2, initialWeight2));
+            hideNeuron.strelkaMap.put(outputNeuron, rnd.nextDouble(-0.3, 0.3));
         }
 
         training("src/neuron/outputResult.txt"); //todo тренировка файл
@@ -119,6 +119,8 @@ public class NeyronnaySet {
                 String[] data = line.split(" ");
                 int index = 0;
                 for (int j = 0; j < inputNeurons.size(); j++) {
+//                    System.out.println("J = "+ j);
+//                    System.out.println("Index = "+ index);
                     inputNeurons.get(j).value = Double.valueOf(data[index++]);
                 }
                 double expectedResult = Double.valueOf(data[index]);
