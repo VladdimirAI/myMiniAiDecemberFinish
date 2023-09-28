@@ -12,18 +12,11 @@ import java.util.List;
 
 public class NastroykaNeyronki {
 
-//    {
-//        PrintStream out = null;
-//        try {
-//            out = new PrintStream(new FileOutputStream("C:/ResultatyObuchaneironki.txt"));
-//        } catch (FileNotFoundException e) {
-//            throw new RuntimeException(e);
-//        }
-//        System.setOut(out);}
+
 
     public static void main(String[] args) throws IOException {
 
-        {PrintStream out = new PrintStream(new FileOutputStream("C:/ResultatPodboraVesa.txt"));
+        {PrintStream out = new PrintStream(new FileOutputStream("C:/ResultatPodboraVesa.txt",true));
             System.setOut(out);}
 //    {
 
