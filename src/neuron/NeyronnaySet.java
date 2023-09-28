@@ -10,9 +10,9 @@ import java.util.Random;
 public class NeyronnaySet {
 
 
-    static List<Neuron> inputNeurons = new ArrayList<>();
-    static List<Neuron> hideNeurons = new ArrayList<>();
-    static Neuron outputNeuron = new Neuron();
+     List<Neuron> inputNeurons = new ArrayList<>();
+     List<Neuron> hideNeurons = new ArrayList<>();
+     Neuron outputNeuron = new Neuron();
 
 
     double initialWeight ; // Начальные веса связей между входными и скрытыми нейронами
@@ -20,10 +20,8 @@ public class NeyronnaySet {
     double learningRate ; // Шаг обучения
     int numTrainingCycles ; // Количество циклов обучения
 
-    public static void main(String[] args) throws IOException {
 
 
-    }
 
 
     public void setInitialWeight(double initialWeight) {
@@ -64,7 +62,7 @@ public class NeyronnaySet {
         }
             hideNeurons = new ArrayList<>();
         // Создание скрытых нейронов
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 2; i++) { // todo число средних нейронов пока что 2
             hideNeurons.add(new Neuron());
         }
 
@@ -139,6 +137,31 @@ public class NeyronnaySet {
             }
         }
     }
+
+
+//    void resolveWeights(double totalValue, double expectedValue) { //todo пробовать этот код для 299 скрытых
+//        double error = totalValue - expectedValue;
+//
+//        // Обновление весов для связей между скрытыми и выходным нейронами
+//        for (Neuron hideNeuron : hideNeurons) {
+//            Double oldWeight = hideNeuron.strelkaMap.get(outputNeuron);
+//            hideNeuron.strelkaMap.put(outputNeuron, oldWeight - hideNeuron.value * error * learningRate * initialWeight2);
+//        }
+//
+//        // Обновление весов для связей между входными и скрытыми нейронами
+//        for (Neuron hideNeuron : hideNeurons) {
+//            double error2 = hideNeuron.strelkaMap.get(outputNeuron) * error;
+//            double delta2 = error2 * (1 - error2) * learningRate;
+//
+//            for (Neuron inputNeuron : inputNeurons) {
+//                Double oldWeight = inputNeuron.strelkaMap.get(hideNeuron);
+//                inputNeuron.strelkaMap.put(hideNeuron, oldWeight - inputNeuron.value * delta2 * initialWeight);
+//            }
+//        }
+//    }
+
+
+
 
     double calc() {
         for (Neuron hideNeuron : hideNeurons) {

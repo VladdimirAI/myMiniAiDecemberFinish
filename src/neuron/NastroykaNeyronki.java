@@ -37,7 +37,7 @@ public class NastroykaNeyronki {
         int[] possibleNumTrainingCycles = {200};
 
         ///
-        double[] iW2 = {0.5,0.52,0.54,0.56,0.58,0.6,0.62,0.64,066,0.68,0.7};
+        double[] iW2 = {0.5,0.52,0.54,0.56,0.58,0.6,0.62,0.64,0.66,0.68,0.7};
         ////
 
         long startTime = System.currentTimeMillis();//todo просто замеры времени
@@ -94,8 +94,8 @@ public class NastroykaNeyronki {
                         System.out.println("iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii выше выйграл " + percent);
                         listPushek.add(percent);
                     }
-                    else if(percent > 55.0){
-                        System.out.println("Неплохооооооооооооооооооооооооооооооооо ");
+                    else if(percent > 62.0){
+                        System.out.println("jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj ура прорыв");
                     }
 
                 }
@@ -117,3 +117,4 @@ public class NastroykaNeyronki {
 
     }
 }
+//todo ошибиться  выйгрышных тоесть когда не поставил на выйгрышн - так же можно сделать в 12 потоков - собирая результаты одновременно например с 01  ивсе остальные значения потом 02 и все остальные масивы 04 и т.д.
