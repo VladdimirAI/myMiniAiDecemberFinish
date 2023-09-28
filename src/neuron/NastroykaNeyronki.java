@@ -12,24 +12,26 @@ import java.util.List;
 
 public class NastroykaNeyronki {
 
-    {
-        PrintStream out = null;
-        try {
-            out = new PrintStream(new FileOutputStream("C:/ResultatyObuchaneironki.txt"));
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        System.setOut(out);}
+//    {
+//        PrintStream out = null;
+//        try {
+//            out = new PrintStream(new FileOutputStream("C:/ResultatyObuchaneironki.txt"));
+//        } catch (FileNotFoundException e) {
+//            throw new RuntimeException(e);
+//        }
+//        System.setOut(out);}
 
     public static void main(String[] args) throws IOException {
         NeyronnaySet neyronnayaSet = new NeyronnaySet();
-        List<String> lines = Files.readAllLines(Paths.get("src/neuron/outputResultDlyaPorverok.txt")); // без пробелов прогрузить
+        List<String> lines = Files.readAllLines(Paths.get("src/neuron/outputResultDlyaPorverok.txt")); // без пробелов прогрузить партия для сверки результатов- других игр
         int collStrok = lines.size();
 
 //        double[] possibleWeights = {0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9};
         double[] possibleWeights = {0.3};
-        double[] possibleLearningRates = {0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9};
-        int[] possibleNumTrainingCycles = {50,100,150,200,300,400,500,600,700,800,900,1000,2000,3000};
+        double[] possibleLearningRates = {0.1};
+//        double[] possibleLearningRates = {0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9};
+//        int[] possibleNumTrainingCycles = {50,100,150,200,300,400,500,600,700,800,900,1000,2000,3000};
+        int[] possibleNumTrainingCycles = {200};
 
 
 
@@ -40,6 +42,9 @@ public class NastroykaNeyronki {
                     neyronnayaSet.setInitialWeight(weight);
                     neyronnayaSet.setLearningRate(learningRate);
                     neyronnayaSet.setNumTrainingCycles(cycles);
+
+                    neyronnayaSet.initializeNeuralNetwork();
+                    neyronnayaSet.training("src/neuron/outputResult.txt"); //todo тренировка файл
 
                     int schetchik = 0;
 
@@ -54,7 +59,7 @@ public class NastroykaNeyronki {
                         }
                         byte resultikTxt = line.getBytes()[line.length() - 1];
                         // Повторное обучение нейронной сети
-                        String ressSety = neyronnayaSet.run(inputValues);
+                        String ressSety = neyronnayaSet.run(inputValues); // проходит лишнее обучение несколько раз
 
                         // Оценка точности на тех же данных одной строки
 

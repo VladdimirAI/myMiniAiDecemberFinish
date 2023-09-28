@@ -10,6 +10,8 @@ import java.util.Scanner;
 
 
 public class NeyronnaySet {
+
+
     static List<Neuron> inputNeurons = new ArrayList<>();
     static List<Neuron> hideNeurons = new ArrayList<>();
     static Neuron outputNeuron = new Neuron();
@@ -62,6 +64,50 @@ public class NeyronnaySet {
 
 
     public String run(byte[] inputValues) throws IOException {
+
+//
+//        Random rnd = new Random(123); // Зерно рандома
+//
+//        // Создание входных нейронов
+//        for (int i = 0; i < 299; i++) {
+//            inputNeurons.add(new Neuron());
+//        }
+//
+//        // Создание скрытых нейронов
+//        for (int i = 0; i < 2; i++) {
+//            hideNeurons.add(new Neuron());
+//        }
+//
+//        // Инициализация связей между входными и скрытыми нейронами
+//        for (Neuron inputNeuron : inputNeurons) {
+//            for (Neuron hideNeuron : hideNeurons) {
+//                inputNeuron.strelkaMap.put(hideNeuron, rnd.nextDouble(-0.3, 0.3));
+//            }
+//        }
+//
+//        // Инициализация связей между скрытыми и выходным нейронами
+//        for (Neuron hideNeuron : hideNeurons) {
+//            hideNeuron.strelkaMap.put(outputNeuron, rnd.nextDouble(-0.3, 0.3));
+//        }
+
+//        training("src/neuron/outputResult.txt"); //todo тренировка файл
+
+
+
+
+
+        setInputValues(inputValues);
+
+
+        double res = calc();
+
+        System.out.println("res = " + res);
+       return res > 0.5 ? "Ставим" : "Отказываемся от ставки";
+    }
+
+
+    public void initializeNeuralNetwork(){
+
         Random rnd = new Random(123); // Зерно рандома
 
         // Создание входных нейронов
@@ -86,19 +132,6 @@ public class NeyronnaySet {
             hideNeuron.strelkaMap.put(outputNeuron, rnd.nextDouble(-0.3, 0.3));
         }
 
-        training("src/neuron/outputResult.txt"); //todo тренировка файл
-
-
-
-
-
-        setInputValues(inputValues);
-
-
-        double res = calc();
-
-        System.out.println("res = " + res);
-       return res > 0.5 ? "Ставим" : "Отказываемся от ставки";
     }
 
     void setInputValues(byte[] values) {
@@ -115,13 +148,19 @@ public class NeyronnaySet {
     void training(String trainingFilePath) throws IOException {
         List<String> lines = Files.readAllLines(Paths.get(trainingFilePath));
         for (int i = 0; i < numTrainingCycles; i++) {
+            int strokaNomer = 0;
             for (String line : lines) {
+              strokaNomer++;
                 String[] data = line.split(" ");
                 int index = 0;
                 for (int j = 0; j < inputNeurons.size(); j++) {
-//                    System.out.println("J = "+ j);
-//                    System.out.println("Index = "+ index);
-                    inputNeurons.get(j).value = Double.valueOf(data[index++]);
+
+                    try {
+                        inputNeurons.get(j).value = Double.valueOf(data[index++]);
+                    } catch (ArrayIndexOutOfBoundsException e) {
+                        System.out.println("Строка "+ strokaNomer + " I nomer " + i);
+                        throw new RuntimeException(e);
+                    }
                 }
                 double expectedResult = Double.valueOf(data[index]);
                 double totalValue = calc();
@@ -192,3 +231,5 @@ public class NeyronnaySet {
 //            System.out.println(i);
 //            inputValues[i] = Byte.parseByte(String.valueOf(inputString.charAt(i)));
 //        }
+
+//todo проверка на пустые строки в самом конце файлов!!!
