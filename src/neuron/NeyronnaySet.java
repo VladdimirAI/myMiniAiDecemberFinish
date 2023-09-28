@@ -101,7 +101,7 @@ public class NeyronnaySet {
 
         double res = calc();
 
-        System.out.println("res = " + res);
+//        System.out.println("res = " + res); // todo отладка
        return res > 0.5 ? "Ставим" : "Отказываемся от ставки";
     }
 

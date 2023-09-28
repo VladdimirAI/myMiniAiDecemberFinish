@@ -22,6 +22,12 @@ public class NastroykaNeyronki {
 //        System.setOut(out);}
 
     public static void main(String[] args) throws IOException {
+
+        {PrintStream out = new PrintStream(new FileOutputStream("C:/ResultatPodboraVesa.txt"));
+            System.setOut(out);}
+//    {
+
+
         NeyronnaySet neyronnayaSet = new NeyronnaySet();
         List<String> lines = Files.readAllLines(Paths.get("src/neuron/outputResultDlyaPorverok.txt")); // без пробелов прогрузить партия для сверки результатов- других игр
         int collStrok = lines.size();
@@ -63,7 +69,8 @@ public class NastroykaNeyronki {
 
                         // Оценка точности на тех же данных одной строки
 
-                        if (ressSety.equals("Ставим") && resultikTxt == 1 || ressSety.equals("Отказываемся от ставки") && resultikTxt == 0) {
+//                        System.out.println(resultikTxt);
+                        if ((ressSety.equals("Ставим") && resultikTxt == 49 )|| (ressSety.equals("Отказываемся от ставки") && resultikTxt == 48)) { // 49 и 48 это значения 0 и 1 в байтовом виде - можно было бы сделать чар но байт легче по памяти
                             schetchik++;
                         }
 
