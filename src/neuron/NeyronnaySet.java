@@ -16,7 +16,7 @@ public class NeyronnaySet {
 
 
     double initialWeight ; // Начальные веса связей между входными и скрытыми нейронами
-    double initialWeight2 = 0.3; // Начальные веса связей между скрытыми и выходным нейронами //todo поправить для задания в обучалке
+    double initialWeight2 ; // Начальные веса связей между скрытыми и выходным нейронами //todo поправить для задания в обучалке
     double learningRate ; // Шаг обучения
     int numTrainingCycles ; // Количество циклов обучения
 

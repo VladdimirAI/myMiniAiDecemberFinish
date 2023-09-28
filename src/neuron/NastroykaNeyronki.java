@@ -19,17 +19,22 @@ public class NastroykaNeyronki {
 
 
         NeyronnaySet neyronnayaSet = new NeyronnaySet();
+        double iW2 = 0.3;
+        neyronnayaSet.initialWeight2 = iW2; //todo жесткая привязка чтоб не делать цикл в цикле 4ре раза за место трех-лучще запустить просто потом с другим параметром
+        System.out.println("initialWeight2 Начальные веса связей между скрытыми и выходным нейронами = " + iW2 );
+
+
         List<String> lines = Files.readAllLines(Paths.get("src/neuron/outputResultDlyaPorverok.txt")); // без пробелов прогрузить партия для сверки результатов- других игр
         int collStrok = lines.size();
 
-//        double[] possibleWeights = {0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9};
-        double[] possibleWeights = {0.3,0.1};
+        double[] possibleWeights = {0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9};
+//        double[] possibleWeights = {0.3};
         double[] possibleLearningRates = {0.1};
 //        double[] possibleLearningRates = {0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9};
 //        int[] possibleNumTrainingCycles = {50,100,150,200,300,400,500,600,700,800,900,1000,2000,3000};
         int[] possibleNumTrainingCycles = {200};
 
-
+        long startTime = System.currentTimeMillis();//todo просто замеры времени
 
         for (double weight : possibleWeights) {
             for (double learningRate : possibleLearningRates) {
@@ -77,6 +82,17 @@ public class NastroykaNeyronki {
             }
         }
 
+
+
+
+        long endTime = System.currentTimeMillis(); //todo просто замеры времени
+        long executionTimeMillis = endTime - startTime;
+
+// Преобразование времени выполнения в минуты и секунды //todo просто замеры времени
+        long minutes = (executionTimeMillis / 1000) / 60;
+        long seconds = (executionTimeMillis / 1000) % 60;
+
+        System.out.println("Время выполнения: " + minutes + " минут " + seconds + " секунд"); //todo просто замеры времени
 
     }
 }
