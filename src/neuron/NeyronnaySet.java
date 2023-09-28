@@ -6,8 +6,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.Scanner;
-
 
 public class NeyronnaySet {
 
@@ -18,25 +16,14 @@ public class NeyronnaySet {
 
 
     double initialWeight ; // Начальные веса связей между входными и скрытыми нейронами
-//    double initialWeight2 = 0.3; // Начальные веса связей между скрытыми и выходным нейронами
-    double initialWeight2 = initialWeight; // Начальные веса связей между скрытыми и выходным нейронами
+    double initialWeight2 = 0.3; // Начальные веса связей между скрытыми и выходным нейронами //todo поправить для задания в обучалке
     double learningRate ; // Шаг обучения
     int numTrainingCycles ; // Количество циклов обучения
-
-//    neuralNetwork.setInitialWeight(0.3); // Задайте желаемые начальные веса
-//    neuralNetwork.setLearningRate(0.1); // Задайте желаемый шаг обучения
-//    neuralNetwork.setNumTrainingCycles(200); // Задайте желаемое количество циклов обучения
-
 
     public static void main(String[] args) throws IOException {
 
 
-//        NeyronnaySet neyronnaySet = new NeyronnaySet();
-//        neyronnaySet.run();
-
     }
-
-
 
 
     public void setInitialWeight(double initialWeight) {
@@ -54,46 +41,7 @@ public class NeyronnaySet {
     }
 
 
-
-
-
-
-
-
-
-
-
     public String run(byte[] inputValues) throws IOException {
-
-//
-//        Random rnd = new Random(123); // Зерно рандома
-//
-//        // Создание входных нейронов
-//        for (int i = 0; i < 299; i++) {
-//            inputNeurons.add(new Neuron());
-//        }
-//
-//        // Создание скрытых нейронов
-//        for (int i = 0; i < 2; i++) {
-//            hideNeurons.add(new Neuron());
-//        }
-//
-//        // Инициализация связей между входными и скрытыми нейронами
-//        for (Neuron inputNeuron : inputNeurons) {
-//            for (Neuron hideNeuron : hideNeurons) {
-//                inputNeuron.strelkaMap.put(hideNeuron, rnd.nextDouble(-0.3, 0.3));
-//            }
-//        }
-//
-//        // Инициализация связей между скрытыми и выходным нейронами
-//        for (Neuron hideNeuron : hideNeurons) {
-//            hideNeuron.strelkaMap.put(outputNeuron, rnd.nextDouble(-0.3, 0.3));
-//        }
-
-//        training("src/neuron/outputResult.txt"); //todo тренировка файл
-
-
-
 
 
         setInputValues(inputValues);
@@ -101,7 +49,7 @@ public class NeyronnaySet {
 
         double res = calc();
 
-//        System.out.println("res = " + res); // todo отладка
+
        return res > 0.5 ? "Ставим" : "Отказываемся от ставки";
     }
 
@@ -109,12 +57,12 @@ public class NeyronnaySet {
     public void initializeNeuralNetwork(){
 
         Random rnd = new Random(123); // Зерно рандома
-
+            inputNeurons = new ArrayList<>();
         // Создание входных нейронов
         for (int i = 0; i < 299; i++) {
             inputNeurons.add(new Neuron());
         }
-
+            hideNeurons = new ArrayList<>();
         // Создание скрытых нейронов
         for (int i = 0; i < 2; i++) {
             hideNeurons.add(new Neuron());
@@ -123,13 +71,13 @@ public class NeyronnaySet {
         // Инициализация связей между входными и скрытыми нейронами
         for (Neuron inputNeuron : inputNeurons) {
             for (Neuron hideNeuron : hideNeurons) {
-                inputNeuron.strelkaMap.put(hideNeuron, rnd.nextDouble(-0.3, 0.3));
+                inputNeuron.strelkaMap.put(hideNeuron, rnd.nextDouble(-initialWeight, initialWeight));
             }
         }
 
         // Инициализация связей между скрытыми и выходным нейронами
         for (Neuron hideNeuron : hideNeurons) {
-            hideNeuron.strelkaMap.put(outputNeuron, rnd.nextDouble(-0.3, 0.3));
+            hideNeuron.strelkaMap.put(outputNeuron, rnd.nextDouble(-initialWeight2, initialWeight2));
         }
 
     }
@@ -149,16 +97,17 @@ public class NeyronnaySet {
         List<String> lines = Files.readAllLines(Paths.get(trainingFilePath));
         for (int i = 0; i < numTrainingCycles; i++) {
             int strokaNomer = 0;
-            for (String line : lines) {
-              strokaNomer++;
+            // Создайте отдельный список, чтобы не изменять исходный список строк
+            List<String> linesCopy = new ArrayList<>(lines);
+            for (String line : linesCopy) {
+                strokaNomer++;
                 String[] data = line.split(" ");
                 int index = 0;
                 for (int j = 0; j < inputNeurons.size(); j++) {
-
                     try {
                         inputNeurons.get(j).value = Double.valueOf(data[index++]);
                     } catch (ArrayIndexOutOfBoundsException e) {
-                        System.out.println("Строка "+ strokaNomer + " I nomer " + i);
+                        System.out.println("Строка " + strokaNomer + " I номер " + i + "index =" + index + " inputNeurons.size() = "+ inputNeurons.size());
                         throw new RuntimeException(e);
                     }
                 }
@@ -171,13 +120,8 @@ public class NeyronnaySet {
             }
         }
     }
-    //Вы считываете строки из файла.
-    //Затем для каждой строки разделяете ее на отдельные значения с помощью split(" "), предполагая, что значения разделены пробелами.
-    //Далее происходит присваивание значений входным нейронам (inputNeurons). Поскольку у вас есть массив с 300 байтами, вы выполняете цикл по размеру inputNeurons и присваиваете значения из data путем преобразования их в Double.
-    //Затем вы определяете ожидаемый результат (expectedResult) как последний элемент в data путем преобразования его в Double.
-    //После этого вы вызываете calc() для вычисления общего значения и принимаете решение на основе порогового значения 0.5.
-    //Если результат не соответствует ожидаемому результату, то вызывается resolveWeights для подстройки весов.
-    //Таким образом, ваш метод training кажется правильным для вашей задачи обучения нейронной сети с использованием данных из текстового файла.
+
+
 
     void resolveWeights(double totalValue, double expectedValue) {
         double error = totalValue - expectedValue;
@@ -221,15 +165,13 @@ public class NeyronnaySet {
     }
 }
 
-//        Scanner scanner = new Scanner(System.in);
-//        System.out.println("Введите строку значений для всех 299 входных нейронов: ");
-//        String inputString = scanner.nextLine();
-//
-//// Преобразование введенной строки в массив байтов
-//        byte[] inputValues = new byte[299];
-//        for (int i = 0; i < inputString.length(); i++) {
-//            System.out.println(i);
-//            inputValues[i] = Byte.parseByte(String.valueOf(inputString.charAt(i)));
-//        }
+
+//Вы считываете строки из файла.
+//Затем для каждой строки разделяете ее на отдельные значения с помощью split(" "), предполагая, что значения разделены пробелами.
+//Далее происходит присваивание значений входным нейронам (inputNeurons). Поскольку у вас есть массив с 300 байтами, вы выполняете цикл по размеру inputNeurons и присваиваете значения из data путем преобразования их в Double.
+//Затем вы определяете ожидаемый результат (expectedResult) как последний элемент в data путем преобразования его в Double.
+//После этого вы вызываете calc() для вычисления общего значения и принимаете решение на основе порогового значения 0.5.
+//Если результат не соответствует ожидаемому результату, то вызывается resolveWeights для подстройки весов.
+//Таким образом, ваш метод training кажется правильным для вашей задачи обучения нейронной сети с использованием данных из текстового файла.
 
 //todo проверка на пустые строки в самом конце файлов!!!
