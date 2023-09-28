@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.List;
+import java.util.*;
 
 public class NastroykaNeyronki {
 
@@ -16,33 +16,43 @@ public class NastroykaNeyronki {
         {PrintStream out = new PrintStream(new FileOutputStream("C:/ResultatPodboraVesa.txt",true));
             System.setOut(out);}
 
-
+        List<Double> listPushek = new ArrayList<>();
 
         NeyronnaySet neyronnayaSet = new NeyronnaySet();
-        double iW2 = 0.3;
-        neyronnayaSet.initialWeight2 = iW2; //todo жесткая привязка чтоб не делать цикл в цикле 4ре раза за место трех-лучще запустить просто потом с другим параметром
-        System.out.println("initialWeight2 Начальные веса связей между скрытыми и выходным нейронами = " + iW2 );
+//        double iW2 = 0.3;
+//        neyronnayaSet.initialWeight2 = iW2; //todo жесткая привязка чтоб не делать цикл в цикле 4ре раза за место трех-лучще запустить просто потом с другим параметром
+//        System.out.println("initialWeight2 Начальные веса связей между скрытыми и выходным нейронами = " + iW2 );
 
 
         List<String> lines = Files.readAllLines(Paths.get("src/neuron/outputResultDlyaPorverok.txt")); // без пробелов прогрузить партия для сверки результатов- других игр
         int collStrok = lines.size();
 
-        double[] possibleWeights = {0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9};
-//        double[] possibleWeights = {0.3};
-        double[] possibleLearningRates = {0.1};
-//        double[] possibleLearningRates = {0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9};
-//        int[] possibleNumTrainingCycles = {50,100,150,200,300,400,500,600,700,800,900,1000,2000,3000};
+        double[] possibleWeights = {0.1,0.12,0.14,0.16,0.18,0.20,0.22,0.24,0.26,0.28,0.3}; // todo попробовать дробить еще вдва за меньще фракцию
+        //        double[] possibleWeights = {0.3};
+
+        double[] possibleLearningRates = {0.1,0.12,0.14,0.16,0.18,0.20,0.22,0.24,0.26,0.28,0.3};
+        //        double[] possibleLearningRates = {0.1};
+
+        //        int[] possibleNumTrainingCycles = {10,50,100,150,200,250,300,350,400,450,500,700,850,1000};
         int[] possibleNumTrainingCycles = {200};
+
+        ///
+        double[] iW2 = {0.5,0.52,0.54,0.56,0.58,0.6,0.62,0.64,066,0.68,0.7};
+        ////
 
         long startTime = System.currentTimeMillis();//todo просто замеры времени
 
         for (double weight : possibleWeights) {
             for (double learningRate : possibleLearningRates) {
-                for (int cycles : possibleNumTrainingCycles) {
+//                for (int cycles : possibleNumTrainingCycles) {
+                    for (double iw2Count : iW2) {
+
                     // Обновление значений параметров
                     neyronnayaSet.setInitialWeight(weight);
                     neyronnayaSet.setLearningRate(learningRate);
-                    neyronnayaSet.setNumTrainingCycles(cycles);
+//                    neyronnayaSet.setNumTrainingCycles(cycles);
+                    neyronnayaSet.setNumTrainingCycles(200);
+                    neyronnayaSet.initialWeight2 = iw2Count;
 
                     neyronnayaSet.initializeNeuralNetwork();
                     neyronnayaSet.training("src/neuron/outputResult.txt"); //todo тренировка файл
@@ -76,13 +86,24 @@ public class NastroykaNeyronki {
                     System.out.println("Процент правельных реешений " + percent);
                     System.out.println("Начальный вес: " + weight);
                     System.out.println("Шаг подстройки: " + learningRate);
-                    System.out.println("Количество циклов обучения: " + cycles);
+//                    System.out.println("Количество циклов обучения: " + cycles);
+
+                    System.out.println("initialWeight2 Начальные веса связей между скрытыми и выходным нейронами = " + iw2Count );
+
+                    if(percent > 60.0){
+                        System.out.println("iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii выше выйграл " + percent);
+                        listPushek.add(percent);
+                    }
+                    else if(percent > 55.0){
+                        System.out.println("Неплохооооооооооооооооооооооооооооооооо ");
+                    }
 
                 }
             }
         }
 
-
+        Collections.sort(listPushek);
+        System.out.println(listPushek);
 
 
         long endTime = System.currentTimeMillis(); //todo просто замеры времени
