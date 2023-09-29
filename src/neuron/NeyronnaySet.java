@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Random;
 
 public class NeyronnaySet {
+    String[][] allData;
+    boolean allDataZamok = true;
 
 
      List<Neuron> inputNeurons = new ArrayList<>();
@@ -92,14 +94,24 @@ public class NeyronnaySet {
 
 
     void training(String trainingFilePath) throws IOException {
-        List<String> lines = Files.readAllLines(Paths.get(trainingFilePath));
-        for (int i = 0; i < numTrainingCycles; i++) {
-            int strokaNomer = 0;
-            // Создайте отдельный список, чтобы не изменять исходный список строк
-            List<String> linesCopy = new ArrayList<>(lines);
-            for (String line : linesCopy) {
 
-                String[] data = line.split(" ");
+        if(allDataZamok) {
+            List<String> lines = Files.readAllLines(Paths.get(trainingFilePath));
+            List<String> linesCopy = new ArrayList<>(lines);
+            allData = new String[linesCopy.size()][];
+            for (int i = 0; i < linesCopy.size(); i++) {
+                allData[i] = linesCopy.get(i).split(" ");
+            }
+            allDataZamok= false;
+        }
+
+        for (int i = 0; i < numTrainingCycles; i++) {
+
+            // Создайте отдельный список, чтобы не изменять исходный список строк
+
+            for (String[] data : allData) {
+
+
                 int index = 0;
                 for (int j = 0; j < inputNeurons.size(); j++) {
                     try {

@@ -90,13 +90,15 @@ public class NastroykaNeyronki {
 
                     System.out.println("initialWeight2 Начальные веса связей между скрытыми и выходным нейронами = " + iw2Count );
 
-                    if(percent > 60.0){
-                        System.out.println("iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii выше выйграл " + percent);
+                    if(percent > 62.0){
+                        System.out.println("jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj ура прорыв "+ percent);
                         listPushek.add(percent);
                     }
-                    else if(percent > 62.0){
-                        System.out.println("jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj ура прорыв");
-                    }
+                    else if
+                        (percent > 60.0){
+                            System.out.println("iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii выше выйграл " + percent);
+                            listPushek.add(percent);
+                        }
 
                 }
             }
