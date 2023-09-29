@@ -1,5 +1,6 @@
 package neuron;
 
+import java.math.BigDecimal;
 import java.util.Scanner;
 
 public class DelatDuubleTest {
@@ -15,11 +16,18 @@ public class DelatDuubleTest {
         System.out.print("Введите шаг: ");
         double step = scanner.nextDouble();
 
-        for (double number = start; number <= end; number += step) {
+        BigDecimal number = BigDecimal.valueOf(start);
+        BigDecimal endBigDecimal = BigDecimal.valueOf(end);
+        BigDecimal stepBigDecimal = BigDecimal.valueOf(step);
+
+        while (number.compareTo(endBigDecimal) <= 0) {
             System.out.print(number);
-            if (number + step <= end) {
+
+            if (number.add(stepBigDecimal).compareTo(endBigDecimal) < 0) {
                 System.out.print(", ");
             }
+
+            number = number.add(stepBigDecimal);
         }
     }
 }

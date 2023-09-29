@@ -98,14 +98,13 @@ public class NeyronnaySet {
             // Создайте отдельный список, чтобы не изменять исходный список строк
             List<String> linesCopy = new ArrayList<>(lines);
             for (String line : linesCopy) {
-                strokaNomer++;
+
                 String[] data = line.split(" ");
                 int index = 0;
                 for (int j = 0; j < inputNeurons.size(); j++) {
                     try {
                         inputNeurons.get(j).value = Double.valueOf(data[index++]);
                     } catch (ArrayIndexOutOfBoundsException e) {
-                        System.out.println("Строка " + strokaNomer + " I номер " + i + "index =" + index + " inputNeurons.size() = "+ inputNeurons.size());
                         throw new RuntimeException(e);
                     }
                 }
