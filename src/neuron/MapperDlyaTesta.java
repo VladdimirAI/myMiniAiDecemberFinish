@@ -10,8 +10,8 @@ import java.util.List;
 
 public class MapperDlyaTesta {
     public static void main(String[] args) {
-        String inputFilePath = "src/neuron/input.txt";
-        String outputFilePath = "src/neuron/output.txt";
+        String inputFilePath = "src/neuron/bezSplita1.txt";
+        String outputFilePath = "src/neuron/bezSplita2.txt";
 
         List<String> lines = readLinesFromFile(inputFilePath);
 

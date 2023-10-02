@@ -6,8 +6,11 @@ import java.util.List;
 
 public class MapperDlyaTesta3 {
     public static void main(String[] args) {
-        String inputFilePath = "src/neuron/outputResult.txt";
-        String outputFilePath = "src/neuron/outputResultDlyaPorverok.txt";
+//        String inputFilePath = "src/neuron/outputResult.txt";
+//        String outputFilePath = "src/neuron/outputResultDlyaPorverok.txt";
+
+        String inputFilePath = "src/neuron/bezSplita2.txt";
+        String outputFilePath = "src/neuron/soSplitom2.txt";
 
         List<String> lines = readLinesFromFile(inputFilePath);
 

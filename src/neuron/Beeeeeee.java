@@ -1,6 +1,9 @@
 package neuron;
 
 public class Beeeeeee {
+
+    private int privatePole = 0;
+
     public static void main(String[] args) {
 
         int num = 0;
@@ -10,5 +13,13 @@ public class Beeeeeee {
         }
 
         System.out.println(num);
+    }
+
+    public  class VloghenyiClass{
+
+        public void metod (){
+            int y = privatePole;
+        }
+
     }
 }

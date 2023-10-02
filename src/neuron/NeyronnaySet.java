@@ -1,6 +1,7 @@
 package neuron;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -60,11 +61,12 @@ public class NeyronnaySet {
             inputNeurons = new ArrayList<>();
         // Создание входных нейронов
         for (int i = 0; i < 299; i++) {
+//        for (int i = 0; i < 12; i++) {
             inputNeurons.add(new Neuron());
         }
             hideNeurons = new ArrayList<>();
         // Создание скрытых нейронов
-        for (int i = 0; i < 2; i++) { // todo число средних нейронов пока что 2
+        for (int i = 0; i < 299; i++) { // todo число средних нейронов пока что 2
             hideNeurons.add(new Neuron());
         }
 
@@ -83,6 +85,7 @@ public class NeyronnaySet {
     }
 
     void setInputValues(byte[] values) {
+//        if (values.length != 12) {
         if (values.length != 299) {
             throw new IllegalArgumentException("Количество значений не соответствует количеству входных нейронов");
         }
@@ -132,22 +135,25 @@ public class NeyronnaySet {
 
 
 
-    void resolveWeights(double totalValue, double expectedValue) {
-        double error = totalValue - expectedValue;
-        double delta = error * (1 - error) * learningRate;
-        for (Neuron hideNeuron : hideNeurons) {
-            Double oldWeight = hideNeuron.strelkaMap.get(outputNeuron);
-            hideNeuron.strelkaMap.put(outputNeuron, oldWeight - hideNeuron.value * delta * initialWeight2);
-        }
-        for (Neuron hideNeuron : hideNeurons) {
-            double error2 = hideNeuron.strelkaMap.get(outputNeuron) * delta;
-            double delta2 = error2 * (1 - error2) * learningRate;
-            for (Neuron inputNeuron : inputNeurons) {
-                Double oldWeight = inputNeuron.strelkaMap.get(hideNeuron);
-                inputNeuron.strelkaMap.put(hideNeuron, oldWeight - inputNeuron.value * delta2 * initialWeight);
-            }
-        }
-    }
+
+
+//
+//    void resolveWeights(double totalValue, double expectedValue) { // todo оригинал
+//        double error = totalValue - expectedValue;
+//        double delta = error * (1 - error) * learningRate;
+//        for (Neuron hideNeuron : hideNeurons) {
+//            Double oldWeight = hideNeuron.strelkaMap.get(outputNeuron);
+//            hideNeuron.strelkaMap.put(outputNeuron, oldWeight - hideNeuron.value * delta * initialWeight2);
+//        }
+//        for (Neuron hideNeuron : hideNeurons) {
+//            double error2 = hideNeuron.strelkaMap.get(outputNeuron) * delta;
+//            double delta2 = error2 * (1 - error2) * learningRate;
+//            for (Neuron inputNeuron : inputNeurons) {
+//                Double oldWeight = inputNeuron.strelkaMap.get(hideNeuron);
+//                inputNeuron.strelkaMap.put(hideNeuron, oldWeight - inputNeuron.value * delta2 * initialWeight);
+//            }
+//        }
+//    }
 
 
 //    void resolveWeights(double totalValue, double expectedValue) { //todo пробовать этот код для 299 скрытых
@@ -170,7 +176,29 @@ public class NeyronnaySet {
 //            }
 //        }
 //    }
+    // лучщще вот этот ниже
 
+void resolveWeights(double totalValue, double expectedValue) {
+    double error = totalValue - expectedValue;
+    double delta = error * (1 - error) * learningRate;
+
+    // Обновление весов связей между скрытыми и выходным нейроном
+    for (Neuron hideNeuron : hideNeurons) {
+        Double oldWeight = hideNeuron.strelkaMap.get(outputNeuron);
+        hideNeuron.strelkaMap.put(outputNeuron, oldWeight - hideNeuron.value * delta * initialWeight2);
+    }
+
+    // Обновление весов связей между входными и скрытыми нейронами
+    for (Neuron hideNeuron : hideNeurons) {
+        double error2 = hideNeuron.strelkaMap.get(outputNeuron) * delta;
+        double delta2 = error2 * (1 - error2) * learningRate;
+
+        for (Neuron inputNeuron : inputNeurons) {
+            Double oldWeight = inputNeuron.strelkaMap.get(hideNeuron);
+            inputNeuron.strelkaMap.put(hideNeuron, oldWeight - inputNeuron.value * delta2 * initialWeight);
+        }
+    }
+}
 
 
 
