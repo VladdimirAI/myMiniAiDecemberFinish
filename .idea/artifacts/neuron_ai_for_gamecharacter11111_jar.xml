@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="neuron_ai_for_gamecharacter11111:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/neuron_ai_for_gamecharacter11111_jar</output-path>
+    <root id="archive" name="neuron_ai_for_gamecharacter11111.jar">
+      <element id="module-output" name="neuron_ai_for_gamecharacter11111" />
+    </root>
+  </artifact>
+</component>

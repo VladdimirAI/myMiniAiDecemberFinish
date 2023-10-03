@@ -25,29 +25,32 @@ public class NastroykaNeyronki {
 
 
 //        List<String> lines = Files.readAllLines(Paths.get("src/neuron/outputResultDlyaPorverok.txt")); // без пробелов прогрузить партия для сверки результатов- других игр
-        List<String> lines = Files.readAllLines(Paths.get("src/neuron/soSplitom2.txt")); // без пробелов прогрузить партия для сверки результатов- других игр
+        List<String> lines = Files.readAllLines(Paths.get("C:/soSplitom2.txt")); // без пробелов прогрузить партия для сверки результатов- других игр
         int collStrok = lines.size();
 
 
 //        double[] possibleWeights = {0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9}; // todo попробовать дробить еще вдва за меньще фракцию
 
 //       double[] possibleWeights = {0.07, 0.072, 0.074, 0.076, 0.078, 0.080, 0.082, 0.084, 0.086, 0.088,0.090}; // todo попробовать дробить еще вдва за меньще фракцию
-        double[] possibleWeights = {0.7}; // todo попробовать дробить еще вдва за меньще фракцию
+        double[] possibleWeights = {0.001,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9}; // todo попробовать дробить еще вдва за меньще фракцию
         //        double[] possibleWeights = {0.3};
 
 //        double[] possibleLearningRates = {0.19, 0.191, 0.192, 0.193, 0.194, 0.195, 0.196, 0.197, 0.198, 0.199, 0.200, 0.201, 0.202, 0.203, 0.204, 0.205, 0.206, 0.207, 0.208, 0.209,0.210};
-        double[] possibleLearningRates = {0.7};
+        double[] possibleLearningRates = {0.1,0.2,0.09,0.08,0.07,0.06,0.05,0.04,0.03,0.02,0.01};
         //        double[] possibleLearningRates = {0.1};
 
         //        int[] possibleNumTrainingCycles = {10,50,100,150,200,250,300,350,400,450,500,700,850,1000};
-        int[] possibleNumTrainingCycles = {200};
+        int[] possibleNumTrainingCycles = {100};
 
         ///
 //        double[] iW2 = {0.5, 0.505, 0.510, 0.515, 0.520, 0.525, 0.530, 0.535, 0.540, 0.545, 0.550, 0.555,0.560};
-        double[] iW2 = {0.1};
+        double[] iW2 = {0.001,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9};
         ////
 
         long startTime = System.currentTimeMillis();//todo просто замеры времени
+        long startPuska = System.currentTimeMillis();
+
+        System.out.println("Программа стартанула " + startTime);
 
         for (double weight : possibleWeights) {
             for (double learningRate : possibleLearningRates) {
@@ -58,11 +61,11 @@ public class NastroykaNeyronki {
                     neyronnayaSet.setInitialWeight(weight);
                     neyronnayaSet.setLearningRate(learningRate);
 //                    neyronnayaSet.setNumTrainingCycles(cycles);
-                    neyronnayaSet.setNumTrainingCycles(200); // todo обратить внимание
+                    neyronnayaSet.setNumTrainingCycles(100); // todo обратить внимание
                     neyronnayaSet.initialWeight2 = iw2Count;
 
                     neyronnayaSet.initializeNeuralNetwork();
-                    neyronnayaSet.training("src/neuron/bezSplita2.txt"); //todo тренировка файл
+                    neyronnayaSet.training("C:/bezSplita2.txt"); //todo тренировка файл
 
                     int schetchik = 0;
 
@@ -109,11 +112,23 @@ public class NastroykaNeyronki {
                         }
 
                 }
+                long currentTime = System.currentTimeMillis();
+                if (currentTime - startPuska >= 6 * 60 * 60 * 1000) {
+                    // Код для сортировки и вывода результатов
+                    Collections.sort(listPushek);
+                    System.out.println(listPushek);
+                    startPuska = currentTime; // Обновляем время последней сортировки
+                    System.out.println("NNNNNNN");
+                }
+
+
             }
         }
 
+        System.out.println("EEEEEEEEEEE");
         Collections.sort(listPushek);
         System.out.println(listPushek);
+
 
 
         long endTime = System.currentTimeMillis(); //todo просто замеры времени
